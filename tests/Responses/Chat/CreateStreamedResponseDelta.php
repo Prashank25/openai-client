@@ -18,6 +18,14 @@ test('from content chunk', function () {
         ->content->toBe('Hello');
 });
 
+test('from content chunk with only zero', function () {
+    $result = CreateStreamedResponseDelta::from(chatCompletionStreamContentZeroChunk()['choices'][0]['delta']);
+
+    expect($result)
+        ->role->toBeNull()
+        ->content->toBe('0');
+});
+
 test('to array from first chunk', function () {
     $result = CreateStreamedResponseDelta::from(chatCompletionStreamFirstChunk()['choices'][0]['delta']);
 
@@ -30,4 +38,11 @@ test('to array for a content chunk', function () {
 
     expect($result->toArray())
         ->toBe(chatCompletionStreamContentChunk()['choices'][0]['delta']);
+});
+
+test('to array for a content chunk with only zero', function () {
+    $result = CreateStreamedResponseDelta::from(chatCompletionStreamContentZeroChunk()['choices'][0]['delta']);
+
+    expect($result->toArray())
+        ->toBe(chatCompletionStreamContentZeroChunk()['choices'][0]['delta']);
 });
